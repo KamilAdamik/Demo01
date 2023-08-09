@@ -5,7 +5,9 @@ flow:
     - ping_target_host:
         do:
           io.cloudslang.base.samples.utils.ping_target_host:
-            - target_host: google.com
+            - target_host: yahoo.com
+        publish:
+          - return_result
         navigate:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
