@@ -5,7 +5,7 @@ flow:
     - install_a_python_package:
         do:
           Custom.install_a_python_package:
-            - packages_list: ldap3
+            - packages_list: beautifulsoup4
         navigate:
           - SUCCESS: SUCCESS
   results:
