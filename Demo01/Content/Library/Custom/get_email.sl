@@ -13,7 +13,7 @@ flow:
                 sensitive: true
             - email_address: lfvootraning@materna.se
             - query: null
-            - o_data_query: $search=pizza
+            - o_data_query: $search=LUFTFARTSVERKET
             - trust_all_roots: 'true'
             - x_509_hostname_verifier: allow_all
             - response_character_set: UTF-8
@@ -50,13 +50,22 @@ flow:
             - ignore_case: 'true'
         navigate:
           - SUCCESS: remove_html_tags
-          - FAILURE: on_failure
+          - FAILURE: extract_info_from_text
     - remove_html_tags:
         do:
           Custom.remove_html_tags:
             - input_string: '${email_body}'
         publish:
-          - email_body_clean: '${clean_text}'
+          - email_body: '${clean_text}'
+        navigate:
+          - SUCCESS: extract_info_from_text
+    - extract_info_from_text:
+        do:
+          Custom.extract_info_from_text:
+            - input_string: '${email_body}'
+            - template_mapping: '{"customer":["Customer: ", "PW Reference number"],"reference_number":["PW Reference number: ","Your affected"],"start_time":["Start Date and Time: ", " End Date and Time"],"end_time":["End Date and Time: ","Reason for work:"], "service_ids":["Service ID: ","Product:"]}'
+        publish:
+          - return_result
         navigate:
           - SUCCESS: SUCCESS
   results:
@@ -78,10 +87,13 @@ extensions:
         x: 400
         'y': 160
       remove_html_tags:
-        x: 520
+        x: 560
+        'y': 240
+      extract_info_from_text:
+        x: 720
         'y': 160
         navigate:
-          b28d8b8e-56bc-de92-6205-cb93973598ac:
+          6e245f07-a684-e673-40d4-be5ab552eec2:
             targetId: ff7583ce-bba2-d983-1852-cef4bd4969a3
             port: SUCCESS
     results:

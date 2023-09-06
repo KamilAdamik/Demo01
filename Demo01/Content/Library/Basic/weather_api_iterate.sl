@@ -2,7 +2,7 @@ namespace: Basic
 flow:
   name: weather_api_iterate
   inputs:
-    - cities_list: '[Stockholm,Bratislava,Berlin]'
+    - cities_list: '[Göteborg,Stockholm,Bratislava,Berlin]'
     - temparatures_list:
         default: '[]'
         required: false
@@ -25,11 +25,11 @@ flow:
           - temperature
         navigate:
           - FAILURE: on_failure
-          - SUCCESS: add_object_into_json_array
+          - SUCCESS: add_object_into_json_array2
           - UNAUTHORIZED: CUSTOM
-    - add_object_into_json_array:
+    - add_object_into_json_array2:
         do:
-          io.cloudslang.base.json.add_object_into_json_array:
+          Basic.add_object_into_json_array2:
             - json_array: '${temparatures_list}'
             - json_object: "${'{\"' + current_city + '\": \"' + temperature + '\"}'}"
         publish:
@@ -58,11 +58,11 @@ extensions:
           b97c1f2e-10d9-9816-eb21-d8d3c30ce68b:
             targetId: 01d0c70b-f6d6-4d36-5347-ec969b825393
             port: UNAUTHORIZED
-      add_object_into_json_array:
+      add_object_into_json_array2:
         x: 480
         'y': 160
         navigate:
-          f1656a6c-f69c-6d37-05c0-eb88eb9bf6a6:
+          1dde67d2-2c32-11a1-99c1-f47166054406:
             vertices:
               - x: 320
                 'y': 120
@@ -72,7 +72,7 @@ extensions:
       SUCCESS:
         f9478ca0-a480-5e2b-afb0-21a596d5edd9:
           x: 280
-          'y': 0
+          'y': 40
       CUSTOM:
         01d0c70b-f6d6-4d36-5347-ec969b825393:
           x: 480

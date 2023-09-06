@@ -9,7 +9,7 @@ namespace: smax
 flow:
   name: search_entities_and_jsonFilter
   inputs:
-    - saw_url: 'https://ngsm.smax-materna.se/'
+    - smax_url: "${get_sp('smax.smax_url')}"
     - tenant_id: '644815427'
     - username: oo.user
     - password:

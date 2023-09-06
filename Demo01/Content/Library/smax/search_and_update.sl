@@ -8,14 +8,14 @@ namespace: smax
 flow:
   name: search_and_update
   inputs:
-    - saw_url: 'https://ngsm.smax-materna.se/'
+    - saw_url: 'https://ngsm.smax-materna.se'
     - tenant_id: '644815427'
-    - username: oo.user
+    - username: kamil
     - password:
-        default: Password123+
+        default: Materna2023+
         sensitive: true
-    - entity_type: Person
-    - fields: 'Id,Email'
+    - entity_type: Request
+    - fields: 'Id,DisplayLabel,Status,Description'
   workflow:
     - search_entities:
         do:
@@ -27,7 +27,7 @@ flow:
                 value: '${password}'
                 sensitive: true
             - entity_type: '${entity_type}'
-            - query: "FirstName startswith('Adam')"
+            - query: "DisplayLabel = 'NT Password Expired' and Status != 'RequestStatusComplete'"
             - fields: '${fields}'
         publish:
           - entity_json
@@ -64,10 +64,10 @@ flow:
             - tenant_id: '${tenant_id}'
             - json_body: |-
                 ${{
-                 "entity_type":"Person",
+                 "entity_type":"Request",
                  "properties":{
                     "Id":"" + entity_id + "",
-                    "HomeLocation":"Stockholm"
+                    "Description":"Now Updated"
                  }
                 }}
         navigate:
@@ -108,4 +108,4 @@ extensions:
       SUCCESS:
         c836af80-669f-82e2-b435-36c79bcbfa37:
           x: 680
-          'y': 0
+          'y': 100
