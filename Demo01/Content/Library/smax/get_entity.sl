@@ -40,7 +40,7 @@ flow:
             - tenant_id: '${tenant_id}'
             - entity_type: Person
             - entity_id: '22375'
-            - fields: Email
+            - fields: FULL_LAYOUT
         navigate:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
@@ -52,6 +52,9 @@ flow:
 extensions:
   graph:
     steps:
+      get_sso_token:
+        x: 40
+        'y': 80
       get_entity:
         x: 280
         'y': 160
@@ -62,9 +65,6 @@ extensions:
           141577ab-11f0-091d-0215-1592255b99ad:
             targetId: 4f9fabf2-8587-7552-6dec-6cf32cc2d4cc
             port: SUCCESS
-      get_sso_token:
-        x: 40
-        'y': 80
     results:
       CUSTOM:
         0fc55ac1-7d5b-7719-945b-e98eb810e569:
