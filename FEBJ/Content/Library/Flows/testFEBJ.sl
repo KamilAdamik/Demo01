@@ -1,6 +1,6 @@
 namespace: Flows
 flow:
-  name: test2FEBJ
+  name: testFEBJ
   workflow:
     - run_command:
         do:
