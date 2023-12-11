@@ -19,18 +19,18 @@ extensions:
         x: 100
         'y': 250
         navigate:
-          9b114ac6-5e51-4273-1507-57c57ed03c4e:
-            targetId: 7f645cfc-129a-68c1-3127-f70d0aea32c4
+          6ee7423e-a3d4-8547-64bc-59ae3af538cf:
+            targetId: e26d029b-2c4d-f143-b3b8-dbe432c32a7b
             port: SUCCESS
-          bfe1b5ba-b5ea-49f9-c532-25df1d4fbf99:
-            targetId: 46900946-5e0b-4d99-9b83-425e2617c764
+          0354b9cb-eb38-8870-72e7-036cf5594027:
+            targetId: 353bc449-7782-72a8-aa3f-4f357fa00970
             port: FAILURE
     results:
       SUCCESS:
-        7f645cfc-129a-68c1-3127-f70d0aea32c4:
+        e26d029b-2c4d-f143-b3b8-dbe432c32a7b:
           x: 400
           'y': 125
       FAILURE_1:
-        46900946-5e0b-4d99-9b83-425e2617c764:
+        353bc449-7782-72a8-aa3f-4f357fa00970:
           x: 400
           'y': 375
