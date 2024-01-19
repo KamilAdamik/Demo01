@@ -72,7 +72,7 @@ extensions:
       SUCCESS:
         f9478ca0-a480-5e2b-afb0-21a596d5edd9:
           x: 280
-          'y': 40
+          'y': 0
       CUSTOM:
         01d0c70b-f6d6-4d36-5347-ec969b825393:
           x: 480

@@ -2,7 +2,7 @@ namespace: Basic
 flow:
   name: weather_api_loop
   inputs:
-    - cities_list: 'Stockholm,Bratislava,Berlin'
+    - cities_list: 'Göteborg,Stockholm,Bratislava,Berlin'
   workflow:
     - weather_api:
         loop:
