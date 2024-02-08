@@ -5,7 +5,7 @@ flow:
     - install_a_python_package:
         do:
           Custom.install_a_python_package:
-            - packages_list: beautifulsoup4
+            - packages_list: reportlab
         navigate:
           - SUCCESS: SUCCESS
   results:
