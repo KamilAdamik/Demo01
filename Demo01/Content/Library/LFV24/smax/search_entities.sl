@@ -5,7 +5,7 @@
 #! @input fields: The properties or sub-structure of a data resource should be returned by a service.
 #!!#
 ########################################################################################################################
-namespace: smax
+namespace: LFV24.smax
 flow:
   name: search_entities
   inputs:
@@ -15,7 +15,7 @@ flow:
     - password:
         default: Password_123
         sensitive: true
-    - entity_type: Person
+    - entity_type: ActualService
     - query:
         required: false
     - fields: 'Id,Email'

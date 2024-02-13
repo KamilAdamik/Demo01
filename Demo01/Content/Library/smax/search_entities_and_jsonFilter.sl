@@ -9,11 +9,11 @@ namespace: smax
 flow:
   name: search_entities_and_jsonFilter
   inputs:
-    - smax_url: "${get_sp('smax.smax_url')}"
-    - tenant_id: '644815427'
-    - username: oo.user
+    - smax_url: 'https://us7-smax.saas.microfocus.com'
+    - tenant_id: '209578404'
+    - username: zowie.stenroos@materna.se
     - password:
-        default: Password123+
+        default: Password_123
         sensitive: true
     - entity_type: Person
     - query:
@@ -23,7 +23,7 @@ flow:
     - get_sso_token:
         do:
           io.cloudslang.opentext.service_management_automation_x.commons.get_sso_token:
-            - saw_url: '${saw_url}'
+            - saw_url: '${smax_url}'
             - tenant_id: '${tenant_id}'
             - username: '${username}'
             - password:
@@ -37,7 +37,7 @@ flow:
     - query_entities:
         do:
           io.cloudslang.opentext.service_management_automation_x.commons.query_entities:
-            - saw_url: '${saw_url}'
+            - saw_url: '${smax_url}'
             - sso_token: '${sso_token}'
             - tenant_id: '${tenant_id}'
             - entity_type: '${entity_type}'

@@ -5,11 +5,11 @@
 #! @input fields: The properties or sub-structure of a data resource should be returned by a service.
 #!!#
 ########################################################################################################################
-namespace: smax
+namespace: LFV24.smax
 flow:
-  name: search_entities
+  name: search_entities_and_jsonFilter
   inputs:
-    - saw_url: 'https://us7-smax.saas.microfocus.com'
+    - smax_url: 'https://us7-smax.saas.microfocus.com'
     - tenant_id: '209578404'
     - username: zowie.stenroos@materna.se
     - password:
@@ -23,7 +23,7 @@ flow:
     - get_sso_token:
         do:
           io.cloudslang.opentext.service_management_automation_x.commons.get_sso_token:
-            - saw_url: '${saw_url}'
+            - saw_url: '${smax_url}'
             - tenant_id: '${tenant_id}'
             - username: '${username}'
             - password:
@@ -37,7 +37,7 @@ flow:
     - query_entities:
         do:
           io.cloudslang.opentext.service_management_automation_x.commons.query_entities:
-            - saw_url: '${saw_url}'
+            - saw_url: '${smax_url}'
             - sso_token: '${sso_token}'
             - tenant_id: '${tenant_id}'
             - entity_type: '${entity_type}'
@@ -46,15 +46,23 @@ flow:
             - size: '1000'
         publish:
           - return_result
-          - entity_json
         navigate:
           - FAILURE: on_failure
-          - SUCCESS: SUCCESS
+          - SUCCESS: smax_json_filter
           - NO_RESULTS: NO_ENTITIES_FOUND
+    - smax_json_filter:
+        do:
+          smax.smax_json_filter:
+            - json_data: '${return_result}'
+            - match_key: Email
+            - match_filter: materna
+            - return_key: Id
+        publish:
+          - ids_to_update: '${return_result}'
+        navigate:
+          - SUCCESS: SUCCESS
   outputs:
-    - return_result: '${return_result}'
-    - entity_json: '${entity_json}'
-    - sso_token: '${sso_token}'
+    - ids_to_update: '${ids_to_update}'
   results:
     - FAILURE
     - NO_ENTITIES_FOUND
@@ -72,7 +80,11 @@ extensions:
           15fe28f1-9683-3506-c673-8721d60b1324:
             targetId: 6e85f731-3109-9c26-7016-1c8878b4248e
             port: NO_RESULTS
-          b144e798-fe45-8910-943c-d9dee486e595:
+      smax_json_filter:
+        x: 480
+        'y': 80
+        navigate:
+          d726300f-23e3-ba90-cae7-d308c5812d9f:
             targetId: 195e774e-8c08-a9a7-3e4b-4cda9b1846f0
             port: SUCCESS
     results:
@@ -82,5 +94,5 @@ extensions:
           'y': 320
       SUCCESS:
         195e774e-8c08-a9a7-3e4b-4cda9b1846f0:
-          x: 480
+          x: 640
           'y': 160

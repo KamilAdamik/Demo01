@@ -7,6 +7,7 @@ flow:
           LFV24.generate_barcodes2pdf:
             - asset_tags_str: '["HPSVR07111", "HPPC0023", "LRU10002","THC420","20DIS20D"]'
             - pdf_output_path: "C:\\Temp\\assets_barcodes.pdf"
+            - max_barcodes_per_page: '5'
         publish:
           - result
         navigate:
