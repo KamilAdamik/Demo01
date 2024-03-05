@@ -2,12 +2,14 @@ namespace: Custom
 flow:
   name: text_extraction
   workflow:
-    - extract_info_from_text:
+    - extract_info_from_text2:
         do:
-          Custom.extract_info_from_text:
-            - input_string: 'Planned work (PW) Notification from Telia Company Customer: McDonalds PW Reference number: NMCP179847 Your affected services are listed further below - Maintenance Window: Start Date and Time: 2022-Feb-09 00:00 CET/CEST End Date and Time: 2022-Feb-09 04:00 CET/CESTReason for work: Software upgrading due to the introduction of the new services/ featuresLocation of work: Lund, SwedenThe same information can also be found in the form of tables in the attached files.----------------------------------------------------------------------Affected service(s) and impact at any time during the maintenance window given above:Service ID: DNI-61331 (Alias: Malmö/Sturup Backup) (LUFTLEDNINGSVÄGEN 3, STURUP) Product: Telia DataNet Impact: 1 x 15 minutes interruptionService ID: DNI-61331-100 Product:  Impact: 1 x 15 minutes interruption'
-            - template_mapping: '{"customer":["Customer: ", "PW Reference number"],"reference_number":["PW Reference number: ","Your affected"],"start_time":["Start Date and Time: ", " End Date and Time"],"end_time":["End Date and Time: ","Reason for work:"], "service_ids":["Service ID: ","Product:"]}'
-            - input_string_1: null
+          Custom.extract_info_from_text2:
+            - input_string: "[\"\\r\\ntstZowie Stenroos Senior Service Management Specialist MATERNA Information & Communications AB Phone:  +46 (0)8 626 42 00 Mobile:  +46 (0)708 36 49 56______________________________________________________________ Vi brinner för att utveckla verksamheter. Vi vill se våra kunder lyckas genom att  erbjuda rätt processer, teknologi och tjänster. Det är det vi kallar digitalisering.   Utmaningar med ärendeflöden och intern samverkan? Läs om hur vi ser på området Smartare Ärendehantering  Kontakta oss gärna så berättar vi mer eller lär känna oss bättre på www.materna.se.  Du kan också följa oss på LinkedIn From: Micro Focus <noreply@support.microfocus.com>Sent: Thursday, February 8, 2024 02:07To: Zowie Stenroos <Zowie.Stenroos@materna.se>Subject: Micro Focus Knowledge Base Notification   Dear Zowie Stenroos, OpenText has released new or updated information related to your requested notifications. Below are the links of articles you subscribed to: Product: Service Management Automation (SMA/SMAX)Title: What is the default network performance indicator threshold?Document Type: KnowledgeSubscriptionID: a7R8e00000007HGEAYLast Updated: 2024-02-07 02:02:34Product: Service Management Automation (SMA/SMAX)Title: How to validate that field B must be greater than field ADocument Type: KnowledgeSubscriptionID: a7R8e00000007HGEAYLast Updated: 2024-02-07 02:06:23Product: Service Management Automation (SMA/SMAX)Title: Firewall breaking OMT/CDF communication of SMA-SM. Some pods will fail.Document Type: KnowledgeSubscriptionID: a7R8e00000007HGEAYLast Updated: 2024-02-07 02:00:30Product: Service Management Automation (SMA/SMAX)Title: Error: UnmountVolume.TearDown failed for volume \"itom-vol\" constantly appears in /var/log/messages of AMX master and worker nodesDocument Type: KnowledgeSubscriptionID: a7R8e00000007HGEAYLast Updated: 2024-02-07 00:18:54Product: Service Management Automation (SMA/SMAX)Title: How to display multiple fields in one field and display characters of a specified length?Document Type: KnowledgeSubscriptionID: a7R8e00000007HGEAYLast Updated: 2024-02-07 02:09:01Thank you, OpenText Email Notification.Please do not reply. Notifications are sent from an unmonitored email address.If you wish to change your notification details, please visit our website at: support website  [Extern avsändare] Klicka inte på länkar och ladda inte ner filer om du inte känner igen avsändaren och vet att innehållet är säkert. \"]"
+            - template_mapping: '{"product":["Product: ", "Title"],"title":["Title: ","Document Type:"],"document_type":["Document Type: ", "SubscriptionID:"],"subscription_id":["SubscriptionID: ","Last Updated:"]}'
+        publish:
+          - return_result
+          - error
         navigate:
           - SUCCESS: SUCCESS
   results:
@@ -15,11 +17,11 @@ flow:
 extensions:
   graph:
     steps:
-      extract_info_from_text:
-        x: 320
+      extract_info_from_text2:
+        x: 240
         'y': 200
         navigate:
-          7067fd53-de50-df64-a65a-3a79beb6b4ac:
+          9b03cb65-5105-d2e5-55fa-92fd570d481f:
             targetId: 47a1b32e-aa4b-1c24-1d98-9954fb0b7f8c
             port: SUCCESS
     results:

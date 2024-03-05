@@ -5,18 +5,22 @@
 #! @input tenant_id: The OpenText SMAX tenant Id.
 #! @input username: The user name used for authentication.
 #! @input password: The password used for authentication.
+#! @input entity_type: The OpenText SMAX entity type.
+#! @input entity_id: The OpenText SMAX entity Id.
 #!!#
 ########################################################################################################################
 namespace: LFV24.smax
 flow:
   name: get_entity
   inputs:
-    - saw_url: 'https://ngsm.smax-materna.se/'
-    - tenant_id: '644815427'
-    - username: oo.user
+    - saw_url: 'https://us7-smax.saas.microfocus.com'
+    - tenant_id: '209578404'
+    - username: zowie.stenroos@materna.se
     - password:
-        default: Password123+
+        default: Password_123
         sensitive: true
+    - entity_type: Request
+    - entity_id: '26171'
   workflow:
     - get_sso_token:
         do:
@@ -38,8 +42,8 @@ flow:
             - saw_url: '${saw_url}'
             - sso_token: '${sso_token}'
             - tenant_id: '${tenant_id}'
-            - entity_type: Person
-            - entity_id: '22375'
+            - entity_type: '${entity_type}'
+            - entity_id: '${entity_id}'
             - fields: FULL_LAYOUT
         navigate:
           - FAILURE: on_failure

@@ -6,6 +6,7 @@ flow:
     - merged_json:
         default: '${{"DisplayLabel":[],"Environment":[]}}'
         required: false
+    - filter_for_impacted_entities: "$[?(@.type == 'business_service')].ucmdbId"
   workflow:
     - get_devices_affected_by_request:
         do:
@@ -43,12 +44,13 @@ flow:
         do:
           LFV24.get_entities_impacted_by_globalId:
             - global_id: '${cur_device_GlobalId}'
-            - json_path_to_filter: "$[?(@.type == 'business_application')].ucmdbId"
+            - json_path_to_filter: '${filter_for_impacted_entities}'
         publish:
           - impacted_global_ids: "${cs_replace(impacted_global_ids[1:-1],'\"',\"'\")}"
         navigate:
           - FAILURE: on_failure
           - SUCCESS: get_services_info
+          - FAILURE_REST_CALL: FAILURE_REST_CALL
     - get_services_info:
         do:
           LFV24.smax.search_entities:
@@ -68,6 +70,7 @@ flow:
     - FAILURE
     - NO_DEVICES_AFFECTED
     - SUCCESS
+    - FAILURE_REST_CALL
 extensions:
   graph:
     steps:
@@ -91,15 +94,23 @@ extensions:
       get_entities_impacted_by_globalId:
         x: 560
         'y': 40
+        navigate:
+          74ee83a7-dc82-a700-0901-b407a76122d5:
+            targetId: 517eab7c-aca4-79e0-40bc-3b54e5b20c5e
+            port: FAILURE_REST_CALL
       get_services_info:
-        x: 720
-        'y': 160
+        x: 520
+        'y': 320
     results:
       NO_DEVICES_AFFECTED:
         6c3f217f-f632-d23c-77eb-e14d3699090f:
-          x: 200
-          'y': 320
+          x: 80
+          'y': 400
       SUCCESS:
         7eed04cd-d07a-0537-5c81-110c320209fb:
-          x: 400
-          'y': 320
+          x: 240
+          'y': 400
+      FAILURE_REST_CALL:
+        517eab7c-aca4-79e0-40bc-3b54e5b20c5e:
+          x: 760
+          'y': 40

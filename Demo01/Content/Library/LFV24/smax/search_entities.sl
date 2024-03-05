@@ -29,6 +29,8 @@ flow:
             - password:
                 value: '${password}'
                 sensitive: true
+            - trust_all_roots: 'true'
+            - x509_hostname_verifier: allow_all
         publish:
           - sso_token
         navigate:
@@ -44,6 +46,8 @@ flow:
             - query: '${query}'
             - fields: '${fields}'
             - size: '1000'
+            - trust_all_roots: 'true'
+            - x509_hostname_verifier: allow_all
         publish:
           - return_result
           - entity_json
