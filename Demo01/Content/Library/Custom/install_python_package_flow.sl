@@ -5,7 +5,7 @@ flow:
     - install_a_python_package:
         do:
           Custom.install_a_python_package:
-            - packages_list: qrcode
+            - packages_list: 'qrcode,reportlab'
         navigate:
           - SUCCESS: SUCCESS
   results:

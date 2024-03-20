@@ -18,6 +18,8 @@ flow:
     - password:
         default: "${get_sp('LFV24.smax_password')}"
         sensitive: true
+    - folder_to_store_pdf: "C:\\Temp"
+    - send_pdf_by_mail: 'false'
   workflow:
     - search_devices:
         do:
@@ -41,10 +43,50 @@ flow:
         do:
           io.cloudslang.base.json.json_path_query:
             - json_object: '${devices_json}'
-            - json_path: $.data.entities..properties.AssetTag
+            - json_path: $..properties.AssetTag
+        publish:
+          - found_asset_tags: '${return_result}'
         navigate:
-          - SUCCESS: SUCCESS
+          - SUCCESS: get_time
           - FAILURE: on_failure
+    - generate_qrcodes2pdf_flow:
+        do:
+          LFV24.QR_codes.generate_qrcodes2pdf_flow:
+            - asset_tags_str: '${found_asset_tags}'
+            - pdf_output_path: "${folder_to_store_pdf + \"\\\\asset_tags_\" + timestamp + \".pdf\"}"
+        publish:
+          - result: '${result + " - " + pdf_output_path}'
+          - generated_pdf
+          - pdf_output_path
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: send_o365_mail_test
+    - get_time:
+        do:
+          io.cloudslang.base.datetime.get_time:
+            - timezone: CET
+            - date_format: yyyy-MM-dd_HH-mm-ss
+        publish:
+          - timestamp: '${output}'
+        navigate:
+          - SUCCESS: generate_qrcodes2pdf_flow
+          - FAILURE: on_failure
+    - send_o365_mail_test:
+        do:
+          Basic.send_o365_mail_test:
+            - file_path: '${pdf_output_path}'
+            - body: 'Please find attached below a generated Asset Tag Document: '
+            - subject: Asset Tags Document Generated
+            - to_recipients: "${get_sp('LFV24.email_recipient')}"
+            - client_secret:
+                value: "${get_sp('LFV24.client_secret')}"
+                sensitive: true
+            - client_id: "${get_sp('LFV24.application_id')}"
+            - login_type: API
+            - tenant: "${get_sp('LFV24.tenant_id')}"
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: SUCCESS
   results:
     - FAILURE
     - NO_ENTITIES_FOUND
@@ -62,16 +104,25 @@ extensions:
       get_asset_tags:
         x: 280
         'y': 160
+      generate_qrcodes2pdf_flow:
+        x: 600
+        'y': 160
+      get_time:
+        x: 440
+        'y': 160
+      send_o365_mail_test:
+        x: 760
+        'y': 160
         navigate:
-          c69451ea-c70e-d973-5220-55b7592d99be:
+          a3221f3a-3117-865b-996c-4db10c2b72e1:
             targetId: 4ccd7af6-66b2-815e-7924-2300ce33c197
             port: SUCCESS
     results:
       NO_ENTITIES_FOUND:
         7acf7668-e0ea-2e04-95f2-35321c0f28e8:
-          x: 200
+          x: 80
           'y': 320
       SUCCESS:
         4ccd7af6-66b2-815e-7924-2300ce33c197:
-          x: 520
-          'y': 200
+          x: 760
+          'y': 320

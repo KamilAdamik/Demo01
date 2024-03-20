@@ -12,9 +12,13 @@ flow:
             - pdf_output_path: '${pdf_output_path}'
         publish:
           - result
+          - generated_pdf
         navigate:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
+  outputs:
+    - result: '${result}'
+    - generated_pdf: '${generated_pdf}'
   results:
     - FAILURE
     - SUCCESS
