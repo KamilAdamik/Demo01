@@ -7,7 +7,7 @@
 ########################################################################################################################
 namespace: LFV24.QR_codes
 flow:
-  name: main_device_asset_tag2pdf_flow
+  name: main_device_asset_tag2pdf_flow_2
   inputs:
     - entity_type: Device
     - query: "(PrintQRCode_c ne null and PrintQRCode_c ne '')"
@@ -19,7 +19,6 @@ flow:
         default: "${get_sp('LFV24.smax_password')}"
         sensitive: true
     - folder_to_store_pdf: /tmp
-    - email_recipient: 'kamil.adamik@materna.group,zowie.stenroos@materna.se'
   workflow:
     - search_devices:
         do:
@@ -36,6 +35,7 @@ flow:
         publish:
           - devices_json: '${entity_json}'
           - sso_token
+          - update_field_content: '${(cs_json_query(return_result,"$.entities[0].properties.PrintQRCode_c"))[2:-2]}'
         navigate:
           - FAILURE: on_failure
           - NO_ENTITIES_FOUND: NO_ENTITIES_FOUND
@@ -78,7 +78,7 @@ flow:
             - file_path: '${pdf_output_path}'
             - body: Please find a generated Asset Tag Document attached to this email.
             - subject: Asset Tags Document Generated
-            - to_recipients: '${email_recipient}'
+            - to_recipients: '${update_field_content}'
             - client_secret:
                 value: "${get_sp('LFV24.client_secret')}"
                 sensitive: true
@@ -127,8 +127,8 @@ extensions:
             targetId: 7acf7668-e0ea-2e04-95f2-35321c0f28e8
             port: NO_ENTITIES_FOUND
       get_asset_tags:
-        x: 280
-        'y': 160
+        x: 200
+        'y': 240
       generate_qrcodes2pdf_flow:
         x: 600
         'y': 160
@@ -139,13 +139,13 @@ extensions:
         x: 760
         'y': 160
       get_smax_ids:
-        x: 280
-        'y': 320
+        x: 320
+        'y': 240
       mass_update_entities:
         x: 920
         'y': 160
         navigate:
-          90ebba5e-f112-54d6-da21-c1db379aef45:
+          0aabf612-5eb9-86b1-5255-efa07fc6d987:
             targetId: 4ccd7af6-66b2-815e-7924-2300ce33c197
             port: SUCCESS
     results:
@@ -155,5 +155,5 @@ extensions:
           'y': 320
       SUCCESS:
         4ccd7af6-66b2-815e-7924-2300ce33c197:
-          x: 760
+          x: 920
           'y': 320

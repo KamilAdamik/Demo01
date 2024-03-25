@@ -5,7 +5,7 @@ flow:
     - write_to_file:
         do:
           io.cloudslang.base.filesystem.write_to_file:
-            - file_path: 'C:/Temp/test.txt'
+            - file_path: /tmp/test.txt
             - text: this is a test text
         navigate:
           - SUCCESS: SUCCESS
