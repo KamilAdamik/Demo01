@@ -27,7 +27,7 @@ extensions:
   graph:
     steps:
       send_mail:
-        x: 240
+        x: 680
         'y': 160
         navigate:
           524627e6-452e-ab0a-cf36-537742d33ae3:

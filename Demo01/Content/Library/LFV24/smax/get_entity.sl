@@ -7,6 +7,8 @@
 #! @input password: The password used for authentication.
 #! @input entity_type: The OpenText SMAX entity type.
 #! @input entity_id: The OpenText SMAX entity Id.
+#! @input fields: The entity fields to get, separated by ",".
+#!                Examples: Id,Status,OwnedByPerson,OwnedByPerson.Name,OwnedByPerson.Email
 #!!#
 ########################################################################################################################
 namespace: LFV24.smax
@@ -21,6 +23,7 @@ flow:
         sensitive: true
     - entity_type: Request
     - entity_id: '26171'
+    - fields: FULL_LAYOUT
   workflow:
     - get_sso_token:
         do:
@@ -44,11 +47,20 @@ flow:
             - tenant_id: '${tenant_id}'
             - entity_type: '${entity_type}'
             - entity_id: '${entity_id}'
-            - fields: FULL_LAYOUT
+            - fields: '${fields}'
+        publish:
+          - entity_json
+          - error_json
+          - return_result
         navigate:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
           - NO_RESULTS: CUSTOM
+  outputs:
+    - entity_json: '${entity_json}'
+    - error_json: '${error_json}'
+    - return_result: '${return_result}'
+    - sso_token: '${sso_token}'
   results:
     - FAILURE
     - CUSTOM

@@ -10,15 +10,15 @@ flow:
   name: search_entities
   inputs:
     - saw_url: 'https://us7-smax.saas.microfocus.com'
-    - tenant_id: '209578404'
-    - username: zowie.stenroos@materna.se
+    - tenant_id: '599360860'
+    - username: kamil.adamik@materna.group
     - password:
-        default: Password_123
+        default: Materna2024+
         sensitive: true
     - entity_type: ActualService
     - query:
         required: false
-    - fields: 'Id,Email'
+    - fields: Id
   workflow:
     - get_sso_token:
         do:

@@ -22,11 +22,13 @@ flow:
   name: send_o365_mail_test
   inputs:
     - file_path:
+        default: /tmp/asset_tags_test01.pdf
         required: false
     - body: Test oo Mail text
     - subject: Test OO mail
     - to_recipients: kamil.adamik@materna.group
     - client_secret:
+        default: wY98Q~JhFOO3jBwGviCeP0azhJuIj2V8gfCGXaHh
         sensitive: true
     - client_id: 45bd1177-07e6-4877-bf6d-7eed253c0b2f
     - login_type: API

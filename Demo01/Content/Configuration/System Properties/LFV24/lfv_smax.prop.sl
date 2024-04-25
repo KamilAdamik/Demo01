@@ -10,9 +10,9 @@ properties:
       value: 'https://us7-smax.saas.microfocus.com'
       sensitive: false
   - smax_tenant:
-      value: '883420899'
+      value: '599360860'
       sensitive: false
-  - smax_user: Zowie.Stenroos@materna.se
+  - smax_user: kamil.adamik@materna.group
   - smax_password:
-      value: Password_123
+      value: Materna2024+
       sensitive: true
