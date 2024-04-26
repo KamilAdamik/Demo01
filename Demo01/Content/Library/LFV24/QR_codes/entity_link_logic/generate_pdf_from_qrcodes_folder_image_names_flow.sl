@@ -4,7 +4,7 @@ flow:
   inputs:
     - qr_codes_folder: /tmp/qr_codes
     - pdf_output_path: '${pdf_output_path}'
-    - bDelete: 'False'
+    - bDelete: 'True'
   workflow:
     - generate_pdf_from_qrcodes_folder_image_names:
         do:

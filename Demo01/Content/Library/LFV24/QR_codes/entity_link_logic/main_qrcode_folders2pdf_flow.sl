@@ -126,10 +126,12 @@ flow:
           - FAILURE: list_iterator
     - folder_list_empty:
         do:
-          io.cloudslang.base.utils.is_null: []
+          io.cloudslang.base.strings.string_equals:
+            - first_string: '${folder_list}'
+            - ignore_case: 'true'
         navigate:
-          - IS_NULL: NO_FOLDER_FOUND
-          - IS_NOT_NULL: list_iterator
+          - SUCCESS: NO_FOLDER_FOUND
+          - FAILURE: list_iterator
   results:
     - FAILURE
     - SUCCESS
@@ -172,11 +174,11 @@ extensions:
         'y': 280
       folder_list_empty:
         x: 240
-        'y': 240
+        'y': 200
         navigate:
-          1905cc28-f1a7-aa36-b32b-eb1ef59c3b82:
+          c5cfb09f-ca63-c940-c1dc-29b522abef72:
             targetId: 4b455bb6-8b4a-f88b-c640-c2abc9e1552e
-            port: IS_NULL
+            port: SUCCESS
       delete_pdf:
         x: 840
         'y': 160
