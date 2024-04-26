@@ -2,21 +2,20 @@ namespace: LFV24.QR_codes.entity_link_logic
 flow:
   name: generate_pdf_from_qrcodes_folder_image_names_flow
   inputs:
-    - asset_tags_str: '["HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789","HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789","HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789","HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789","HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789","HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789","HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789", "HPSVR07111", "HPPC0023", "LRU10002", "THC420", "20DIS20D", "ABC123", "XYZ789"]'
     - qr_codes_folder: /tmp/qr_codes
-    - pdf_output_path: /tmp/asset_tags_test01.pdf
+    - pdf_output_path: '${pdf_output_path}'
     - bDelete: 'False'
   workflow:
-    - generate_pdf_from_qrcodes_folder:
+    - generate_pdf_from_qrcodes_folder_image_names:
         do:
-          LFV24.QR_codes.generate_pdf_from_qrcodes_folder:
-            - asset_tags_str: '${asset_tags_str}'
+          LFV24.QR_codes.entity_link_logic.generate_pdf_from_qrcodes_folder_image_names:
             - qr_codes_folder: '${qr_codes_folder}'
             - pdf_output_path: '${pdf_output_path}'
             - bDelete: '${bDelete}'
         publish:
           - python_operation_result: '${result}'
           - generated_pdf
+          - pdf_output_path
         navigate:
           - SUCCESS: check_for_error
     - check_for_error:
@@ -36,7 +35,7 @@ flow:
 extensions:
   graph:
     steps:
-      generate_pdf_from_qrcodes_folder:
+      generate_pdf_from_qrcodes_folder_image_names:
         x: 160
         'y': 160
       check_for_error:

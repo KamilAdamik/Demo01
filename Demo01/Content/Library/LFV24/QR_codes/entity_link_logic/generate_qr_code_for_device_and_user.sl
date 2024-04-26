@@ -22,7 +22,7 @@ flow:
         default: "${get_sp('LFV24.smax_password')}"
         sensitive: true
     - entity_type: Device
-    - entity_id: '11796'
+    - entity_id: '11797'
     - fields: 'Id,PrintQRCode_c,AssetTag'
     - base_qrcode_path: /tmp/qr_codes
     - field_to_update: PrintQRCode_c
