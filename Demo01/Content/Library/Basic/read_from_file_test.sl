@@ -1,11 +1,18 @@
+########################################################################################################################
+#!!
+#! @input file_path: The path of the file to read.
+#!!#
+########################################################################################################################
 namespace: Basic
 flow:
   name: read_from_file_test
+  inputs:
+    - file_path: /tmp/AttachmentTest.txt
   workflow:
     - read_from_file:
         do:
           io.cloudslang.base.filesystem.read_from_file:
-            - file_path: /tmp/test.txt
+            - file_path: '${file_path}'
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: on_failure
