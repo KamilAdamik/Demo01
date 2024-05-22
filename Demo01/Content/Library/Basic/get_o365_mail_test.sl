@@ -64,19 +64,9 @@ flow:
             - x_509_hostname_verifier: allow_all
         publish:
           - message_id_list
-          - has_attachments: '${(cs_json_query(return_result,"$.value..hasAttachments"))[1:-1]}'
+          - messages_array: '${(cs_json_query(return_result,"$.value"))[1:-1]}'
         navigate:
-          - SUCCESS: iterate_messages_list
-          - FAILURE: on_failure
-    - iterate_messages_list:
-        do:
-          io.cloudslang.base.lists.list_iterator:
-            - list: '${message_id_list}'
-        publish:
-          - current_message_id: '${result_string}'
-        navigate:
-          - HAS_MORE: has_attachments
-          - NO_MORE: SUCCESS
+          - SUCCESS: iterate_messages
           - FAILURE: on_failure
     - get_attachments:
         do:
@@ -89,7 +79,7 @@ flow:
         publish:
           - attachment_array: '${(cs_json_query(return_result,"$.value"))[1:-1]}'
         navigate:
-          - SUCCESS: iterate_attachment_array
+          - SUCCESS: download_o365_attachments
           - FAILURE: on_failure
     - has_attachments:
         do:
@@ -99,29 +89,37 @@ flow:
             - ignore_case: 'true'
         navigate:
           - SUCCESS: get_attachments
-          - FAILURE: iterate_messages_list
-    - iterate_attachment_array:
+          - FAILURE: iterate_messages
+    - iterate_messages:
         do:
           io.cloudslang.base.json.array_iterator:
-            - array: '${attachment_array}'
+            - array: '${messages_array}'
         publish:
-          - current_attachment: '${result_string}'
-          - current_attachment_id: '${(cs_json_query(result_string,"$.id"))[2:-2]}'
-          - current_attachment_filename: '${(cs_json_query(result_string,"$.name"))[2:-2]}'
+          - current_message: '${result_string}'
         navigate:
-          - HAS_MORE: http_client_get_custom
-          - NO_MORE: iterate_messages_list
+          - HAS_MORE: get_message_info
+          - NO_MORE: SUCCESS
           - FAILURE: on_failure
-    - http_client_get_custom:
+    - download_o365_attachments:
         do:
-          Basic.http_client_get_custom:
-            - url: '${"https://graph.microsoft.com/v1.0/users/" + email_address + "/messages/" + current_message_id + "/attachments/" + current_attachment_id + "/$value"}'
-            - trust_all_roots: 'true'
-            - x_509_hostname_verifier: allow_all
-            - destination_file: '${attachments_folder + "/" + current_attachment_filename}'
-            - headers: "${\"Authorization: Bearer \" + access_token + \"\\r\\nAccept: application/octet-stream\"}"
+          Basic.download_o365_attachments:
+            - email_address: '${email_address}'
+            - access_token: '${access_token}'
+            - message_id: '${current_message_id}'
+            - attachment_array: '${attachment_array}'
+            - attachments_folder: '${attachments_folder}'
         navigate:
-          - SUCCESS: iterate_attachment_array
+          - FAILURE: on_failure
+          - SUCCESS: iterate_messages
+    - get_message_info:
+        do:
+          io.cloudslang.base.utils.do_nothing:
+            - current_message: '${current_message}'
+        publish:
+          - current_message_id: '${(cs_json_query(current_message,"$.id"))[2:-2]}'
+          - has_attachments: '${(cs_json_query(current_message,"$.hasAttachments"))[1:-1]}'
+        navigate:
+          - SUCCESS: has_attachments
           - FAILURE: on_failure
   results:
     - FAILURE
@@ -130,32 +128,32 @@ extensions:
   graph:
     steps:
       get_o365_token:
-        x: 40
-        'y': 200
+        x: 160
+        'y': 320
       get_email:
-        x: 200
-        'y': 200
-      iterate_messages_list:
-        x: 360
-        'y': 200
+        x: 320
+        'y': 320
+      get_attachments:
+        x: 840
+        'y': 120
+      has_attachments:
+        x: 680
+        'y': 120
+      iterate_messages:
+        x: 480
+        'y': 320
         navigate:
-          b68a5996-7cce-a14e-d37e-95e23860c648:
+          1567cc4d-ba0a-fd76-f255-e9fc9f502df7:
             targetId: 889106e8-144e-1b6b-f270-2999cf628951
             port: NO_MORE
-      get_attachments:
-        x: 640
-        'y': 40
-      has_attachments:
-        x: 480
-        'y': 40
-      iterate_attachment_array:
-        x: 640
-        'y': 200
-      http_client_get_custom:
+      download_o365_attachments:
         x: 840
-        'y': 200
+        'y': 320
+      get_message_info:
+        x: 480
+        'y': 120
     results:
       SUCCESS:
         889106e8-144e-1b6b-f270-2999cf628951:
-          x: 520
-          'y': 400
+          x: 680
+          'y': 480

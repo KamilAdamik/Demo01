@@ -2,7 +2,7 @@ namespace: Basic
 flow:
   name: list_directory_content_flow
   inputs:
-    - folder_path: /tmp/qr_codes
+    - folder_path: /tmp
   workflow:
     - list_directory_content:
         do:

@@ -1,8 +1,8 @@
 namespace: smax
 properties:
-  - smax_url: 'https://ngsm.smax-materna.se/'
-  - smax_tenant: '644815427'
-  - smax_user: oo.user
+  - smax_url: 'https://us7-smax.saas.microfocus.com'
+  - smax_tenant: '599360860'
+  - smax_user: kamil.adamik@materna.group
   - smax_pass:
-      value: Password123+
+      value: Materna2024+
       sensitive: true

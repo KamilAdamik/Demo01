@@ -7,7 +7,7 @@ namespace: Basic
 flow:
   name: delete_fs
   inputs:
-    - source: /tmp/asset_tags_2024-04-25_01-08-31.pdf
+    - source: /tmp/pnmtk.jpg
   workflow:
     - delete:
         do:
