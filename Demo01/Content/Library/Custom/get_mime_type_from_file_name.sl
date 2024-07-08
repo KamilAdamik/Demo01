@@ -1,0 +1,12 @@
+namespace: Custom
+operation:
+  name: get_mime_type_from_file_name
+  inputs:
+    - file_name
+  python_action:
+    use_jython: false
+    script: "def execute(file_name):\r\n    # Dictionary mapping file extensions to MIME types, ordered alphabetically\r\n    mime_types = {\r\n        \"avi\": \"video/x-msvideo\",\r\n        \"bmp\": \"image/bmp\",\r\n        \"css\": \"text/css\",\r\n        \"doc\": \"application/msword\",\r\n        \"docx\": \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\",\r\n        \"flv\": \"video/x-flv\",\r\n        \"gif\": \"image/gif\",\r\n        \"gz\": \"application/gzip\",\r\n        \"htm\": \"text/html\",\r\n        \"html\": \"text/html\",\r\n        \"ico\": \"image/x-icon\",\r\n        \"jpeg\": \"image/jpeg\",\r\n        \"jpg\": \"image/jpeg\",\r\n        \"js\": \"application/javascript\",\r\n        \"json\": \"application/json\",\r\n        \"mov\": \"video/quicktime\",\r\n        \"mp3\": \"audio/mpeg\",\r\n        \"mp4\": \"video/mp4\",\r\n        \"odt\": \"application/vnd.oasis.opendocument.text\",\r\n        \"ods\": \"application/vnd.oasis.opendocument.spreadsheet\",\r\n        \"odp\": \"application/vnd.oasis.opendocument.presentation\",\r\n        \"pdf\": \"application/pdf\",\r\n        \"png\": \"image/png\",\r\n        \"ppt\": \"application/vnd.ms-powerpoint\",\r\n        \"pptx\": \"application/vnd.openxmlformats-officedocument.presentationml.presentation\",\r\n        \"rar\": \"application/x-rar-compressed\",\r\n        \"svg\": \"image/svg+xml\",\r\n        \"tar\": \"application/x-tar\",\r\n        \"tiff\": \"image/tiff\",\r\n        \"txt\": \"text/plain\",\r\n        \"wav\": \"audio/wav\",\r\n        \"webm\": \"video/webm\",\r\n        \"wmv\": \"video/x-ms-wmv\",\r\n        \"xls\": \"application/vnd.ms-excel\",\r\n        \"xlsx\": \"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\",\r\n        \"xml\": \"application/xml\",\r\n        \"zip\": \"application/zip\",\r\n        # Add more mappings as needed\r\n    }\r\n    \r\n    # Extract file extension\r\n    file_extension = file_name.split('.')[-1].lower()\r\n    \r\n    # Get the MIME type\r\n    mime_type = mime_types.get(file_extension, \"application/octet-stream\")\r\n    \r\n    # Return an object with the MIME type\r\n    return {\"mime_type\": mime_type}"
+  outputs:
+    - mime_type
+  results:
+    - SUCCESS
