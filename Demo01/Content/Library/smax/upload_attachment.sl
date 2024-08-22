@@ -19,11 +19,12 @@ flow:
     - password:
         default: "${get_sp('smax.smax_pass')}"
         sensitive: true
-    - attachment_path
+    - attachment_path: /tmp/AttachmentTest.txt
   workflow:
     - is_token_null:
         do:
-          io.cloudslang.base.utils.is_null: []
+          io.cloudslang.base.utils.is_null:
+            - variable: '${sso_token}'
         navigate:
           - IS_NULL: get_sso_token
           - IS_NOT_NULL: post_ces_api_request
@@ -38,19 +39,39 @@ flow:
                 sensitive: true
             - trust_all_roots: 'true'
             - x509_hostname_verifier: allow_all
+        publish:
+          - sso_token
         navigate:
           - FAILURE: on_failure
           - SUCCESS: post_ces_api_request
     - post_ces_api_request:
         do:
           Basic.http_client_post_custom:
-            - url: '${saw_url + "/" + tenant_id + "/ces/attachment"}'
+            - url: '${saw_url + "/rest/" + tenant_id + "/ces/attachment/"}'
+            - trust_all_roots: 'true'
+            - x_509_hostname_verifier: allow_all
             - headers: '${"Cookie:LWSSO_COOKIE_KEY=" + sso_token + "; TENANTID=" + tenant_id}'
             - multipart_files: '${"files[]=" + attachment_path}'
             - multipart_files_content_type: application/octet-stream
+        publish:
+          - att_id: '${(cs_json_query(return_result,"$.guid"))[2:-2]}'
+          - att_file_name: '${(cs_json_query(return_result,"$.name"))[2:-2]}'
+          - att_file_extension: "${att_name.split('.')[-1]}"
+          - att_size: '${(cs_json_query(return_result,"$.contentLength"))[2:-2]}'
+          - att_mime_type: '${(cs_json_query(return_result,"$.contentType"))[2:-2]}'
+          - att_creator: '${(cs_json_query(return_result,"$.creator"))[2:-2]}'
+          - attachment_json: '${return_result}'
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: on_failure
+  outputs:
+    - att_id: '${att_id}'
+    - att_file_name: '${att_file_name}'
+    - att_file_extension: '${att_file_extension}'
+    - att_size: '${att_size}'
+    - att_mime_type: '${att_mime_type}'
+    - att_creator: '${att_creator}'
+    - attachment_json: '${attachment_json}'
   results:
     - FAILURE
     - SUCCESS
