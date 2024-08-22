@@ -31,9 +31,9 @@ flow:
     - get_entity:
         do:
           LFV24.smax.get_entity:
-            - saw_url: '${saw_url}'
-            - tenant_id: '${tenant_id}'
-            - username: '${username}'
+            - saw_url: "${get_sp('LFV24.smax_url')}"
+            - tenant_id: "${get_sp('LFV24.smax_tenant')}"
+            - username: "${get_sp('LFV24.smax_user')}"
             - password:
                 value: '${password}'
                 sensitive: true

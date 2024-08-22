@@ -34,7 +34,7 @@ flow:
         sensitive: true
     - email_address: "${get_sp('LFV24.email_sender')}"
     - o_data_query: $search=AttachmentTest
-    - attachments_folder: /tmp
+    - attachments_folder: "C:\\Temp"
   workflow:
     - get_o365_token:
         do:

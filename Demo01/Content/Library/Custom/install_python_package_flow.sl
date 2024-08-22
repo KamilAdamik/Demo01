@@ -5,7 +5,7 @@ flow:
     - install_a_python_package:
         do:
           Custom.install_a_python_package:
-            - packages_list: 'qrcode,reportlab'
+            - packages_list: "C:\\\\Temp\\\\numpy-2.1.0-cp311-cp311-win_amd64.whl"
         navigate:
           - SUCCESS: SUCCESS
   results:
